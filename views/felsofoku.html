@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src = "jquery.min.js"></script>
+  <script type="text/javascript" src = "felsofoku.js"></script>
+  <title>Felsőfokú intézmények</title>
+  <style>
+    #informaciosdiv {
+      width: 400px;
+    }
+    #intezmenyinfo {
+      float: right;
+      border: 1px solid black;
+      width: 190px;
+      height: 100px;
+    }
+    .cimke{
+      display: inline-block;
+      width: 60px;
+      text-align: right;
+    }
+    span {
+      margin: 3px 5px;
+    }
+    label {
+      display: inline-block;
+      width: 70px;
+      text-align: right;
+    }
+    select {
+      width: 115px;
+    }
+  </style>
+  </head>
+  <body>
+    <h1>Felsőfokú intézmények:</h1>
+    <div id = 'informaciosdiv'>
+      <div id = 'intezmenyinfo'>
+        <span class="cimke">Típus:</span><span id="tipus" class="adat"></span><br>
+        <span class="cimke">Érték:</span><span id="ertek" class="adat"></span><br>
+        <span class="cimke">Dátum:</span><span id="datum" class="adat"></span><br>
+      </div>
+      <label for='orszagcimke'>Diák:</label>
+      <select id = 'diakselect'></select>
+      <br><br>
+      <label for = 'varoscimke'>Tárgy:</label>
+      <select id = 'targyselect'></select>
+      <br><br>
+      <label for = 'varoscimke'>Jegy:</label>
+      <select id = 'jegyselect'></select>
+    </div>
+  </body>
+</html>
