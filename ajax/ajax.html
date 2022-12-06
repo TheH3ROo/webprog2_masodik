@@ -3,8 +3,8 @@
   <head>
   <meta charset="utf-8">
   <script type="text/javascript" src = "jquery.min.js"></script>
-  <script type="text/javascript" src = "felsofoku.js"></script>
-  <title>Felsőfokú intézmények</title>
+  <script type="text/javascript" src = "ajax.js"></script>
+  <title>Napló</title>
   <style>
     #informaciosdiv {
       width: 400px;
@@ -34,21 +34,20 @@
   </style>
   </head>
   <body>
-    <h1>Felső fokú intézmények:</h1>
+    <h1>Diákok jegyei:</h1>
     <div id = 'informaciosdiv'>
       <div id = 'intezmenyinfo'>
-        <span class="cimke">Név:</span><span id="nev" class="adat"></span><br>
-        <span class="cimke">Cím:</span><span id="cim" class="adat"></span><br>
-        <span class="cimke">Telefon:</span><span id="tel" class="adat"></span><br>
-        <span class="cimke">E-mail:</span><span id="mail" class="adat"></span><br>
+        <span class="cimke">Osztály:</span><span id="osztaly" class="adat"></span><br>
+        <span class="cimke">Érték:</span><span id="ertek" class="adat"></span><br>
+        <span class="cimke">Dátum:</span><span id="datum" class="adat"></span><br>
       </div>
-      <label for='orszagcimke'>Ország:</label>
+      <label for='orszagcimke'>Diák:</label>
       <select id = 'orszagselect'></select>
       <br><br>
-      <label for = 'varoscimke'>Város:</label>
+      <label for = 'varoscimke'>Tárgy:</label>
       <select id = 'varosselect'></select>
       <br><br>
-      <label for = 'varoscimke'>Intézmény:</label>
+      <label for = 'varoscimke'>Jegy:</label>
       <select id = 'intezmenyselect'></select>
     </div>
   </body>

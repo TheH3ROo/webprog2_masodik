@@ -2,21 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Hatoslottó Zrt.</title>
+        <title>Napló Bt.</title>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_ROOT?>css/main_style.css">
         <?php if($viewData['style']) echo '<link rel="stylesheet" type="text/css" href="'.$viewData['style'].'">'; ?>
     </head>
     <body>
         <header>
             <div id="user">Bejelentkezett: <em><?= $_SESSION['userlastname']." ".$_SESSION['userfirstname']?></em> (<em><?= $_SESSION['username']?></em>)</div>
-            <h1 class="header">Hatoslottó Zrt.</h1>
+            <h1 class="header">Napló Bt.</h1>
         </header>
         <nav>
             <?php echo Menu::getMenu($viewData['selectedItems']); ?>
         </nav>
         <aside>
-                <p>A <i>hatoslottó</i> <b>1988</b> óta népszerű szerencsejáték hazánkban.</p>
-                <p>A weboldalon a számhúzások és az azokhoz kapcsolódó nyeremények ismert adatai találhatók meg.</p>
+                <p>A <i>Napló Bt.</i> <b>2000</b> óta népszerű online naplót biztosít iskolák számára.</p>
+                <p>A weboldalon a napló megoldásaink minta adatbázisaival tudnak interakcióba lépni</p>
         </aside>
         <section>
             <?php if($viewData['render']) include($viewData['render']); ?>

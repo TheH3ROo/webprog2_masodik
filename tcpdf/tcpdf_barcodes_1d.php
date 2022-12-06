@@ -53,7 +53,7 @@ class TCPDFBarcode {
 	 * Array representation of barcode.
 	 * @protected
 	 */
-	protected $barcode_array = array();
+	protected $barcode_array;
 
 	/**
 	 * This is the class constructor.
@@ -373,7 +373,7 @@ class TCPDFBarcode {
 				break;
 			}
 			default: {
-				$this->barcode_array = array();
+				$this->barcode_array = false;
 				$arrcode = false;
 				break;
 			}

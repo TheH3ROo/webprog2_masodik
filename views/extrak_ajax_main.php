@@ -1,5 +1,3 @@
-<h2>
-    <br>Alapinfók:<br>
-    <br>Alapinfó 1<br>
-    <br>Alapinfó 2<br>
-</h2>
+<script>
+  window.location.href = "http://localhost/webprog2_masodik/ajax/ajax.html";
+</script>

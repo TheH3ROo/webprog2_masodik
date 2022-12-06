@@ -1,13 +1,11 @@
 function orszagok() {
     $.post(
-        "felsofoku.php",
-        {"op" : "orszag"},
+        "ajax.php",
+        {"op" : "diak"},
         function(data) {
-            //$("#orszagselect").html('<option value="0">Válasszon ...</option>');
             $("<option>").val("0").text("Válasszon ...").appendTo("#orszagselect");
             var lista = data.lista;
             for(i=0; i<lista.length; i++)
-                //$("#orszagselect").append('<option value="'+lista[i].id+'">'+lista[i].nev+'</option>');
                 $("<option>").val(lista[i].id).text(lista[i].nev).appendTo("#orszagselect");
         },
         "json"                                                    
@@ -21,13 +19,13 @@ function varosok() {
     var orszagid = $("#orszagselect").val();
     if (orszagid != 0) {
         $.post(
-            "felsofoku.php",
-            {"op" : "varos", "id" : orszagid},
+            "ajax.php",
+            {"op" : "jegy", "id" : orszagid},
             function(data) {
                 $("#varosselect").html('<option value="0">Válasszon ...</option>');
                 var lista = data.lista;
                 for(i=0; i<lista.length; i++)
-                    $("#varosselect").append('<option value="'+lista[i].id+'">'+lista[i].nev+'</option>');
+                    $("#varosselect").append('<option value="'+lista[i].id+'">'+lista[i].tipus+'</option>');
             },
             "json"                                                    
         );
@@ -40,8 +38,8 @@ function intezmenyek() {
     var varosid = $("#varosselect").val();
     if (varosid != 0) {
         $.post(
-            "felsofoku.php",
-            {"op" : "intezmeny", "id" : varosid},
+            "ajax.php",
+            {"op" : "targy", "id" : varosid},
             function(data) {
                 $("#intezmenyselect").html('<option value="0">Válasszon ...</option>');
                 var lista = data.lista;
@@ -58,13 +56,12 @@ function intezmeny() {
     var intezmenyid = $("#intezmenyselect").val();
     if (intezmenyid != 0) {
         $.post(
-            "felsofoku.php",
+            "ajax.php",
             {"op" : "info", "id" : intezmenyid},
             function(data) {
-                $("#nev").text(data.nev);
-                $("#cim").text(data.cim);
-                $("#tel").text(data.tel);
-                $("#mail").text(data.email);
+                $("#osztaly").text(data.osztaly);
+                $("#ertek").text(data.ertek);
+                $("#datum").text(data.datum);
             },
             "json"                                                    
         );

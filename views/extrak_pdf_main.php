@@ -1,26 +1,81 @@
 <?php
-// A TCPDF 6. példájának a segítségével
+// A TCPDF 11. példájának a segítségével
 
-try {
-    //ob_start();
-	$dbh = new PDO('mysql:host=localhost;dbname=masodik', 'root', '',
-				array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
-	$dbh->query('SET NAMES utf8 COLLATE utf8_hungarian_ci');
-
-	$sql = "SELECT * FROM felhasznalok";     
-	$sth = $dbh->query($sql);
-	$rows = $sth->fetchAll(PDO::FETCH_ASSOC);
-}
-	catch (PDOException $e) {
-	echo "Hiba: ".$e->getMessage();
-}
-
-// Include the main TCPDF library
-ob_start();
 require_once('tcpdf/tcpdf.php');
 
+// extend TCPF with custom functions
+class MYPDF extends TCPDF {
+
+	// Load table data from file
+	public function LoadData($database, $table) {
+		$rows = array();
+		try {
+		
+			$dbh = new PDO('mysql:host=localhost;dbname='.$database, 'root', '',
+						array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+			$dbh->query('SET NAMES utf8 COLLATE utf8_hungarian_ci');
+		
+			$sql = "SELECT * FROM ".$table;     
+			$sth = $dbh->query($sql);
+			$rows = $sth->fetchAll(PDO::FETCH_NUM);
+		}
+		catch (PDOException $e) {
+		}
+		return $rows;
+	}
+
+	// Colored table
+	public function ColoredTable($caption, $header,$rows) {
+		// Caption font and color
+		$this->SetFont('helvetica', 'B', 16);
+		$this->SetTextColor(0, 0, 255);
+		// Caption
+		$this->cell(180, 18, $caption, 0, 0, 'C', 0);
+		$this->Ln();
+		
+		// Borders width
+		$this->SetLineWidth(0.3);
+
+		// Header font and colors
+		$this->SetFont('helvetica', 'B', 10);
+		$this->SetFillColor(255, 0, 0);
+		$this->SetTextColor(255,255,255);
+		$this->SetDrawColor(255,0,0);
+		// Header
+		$w = array(9, 36, 36, 36, 63);
+		$num_headers = count($header);
+		for($i = 0; $i < $num_headers; ++$i) {
+			$this->Cell($w[$i], 12, $header[$i], 1, 0, 'C', 1);
+		}
+		$this->Ln();
+
+		// Rows font and border color
+		$this->SetFont('helvetica', '', 10);
+		$this->SetDrawColor(0,0,255);
+		// Rows
+		$i = 1;
+		foreach($rows as $row) {
+			if($i) {
+				$this->SetFillColor(255,255,255);
+				$this->SetTextColor(0,0,255);
+			}
+			else {
+				$this->SetFillColor(0,0,255);
+				$this->SetTextColor(255,255,255);
+			}
+			$this->Cell($w[0], 14, $row[0], 'LRB', 0, 'R', 1, '', 0, false, 'T', 'T');
+			$this->Cell($w[1], 14, $row[1], 'LRB', 0, 'L', 1, '', 0, false, 'T', 'T');
+			$this->Cell($w[2], 14, $row[2], 'LRB', 0, 'L', 1, '', 0, false, 'T', 'T');
+			$this->Cell($w[3], 14, $row[3], 'LRB', 0, 'L', 1, '', 0, false, 'T', 'T');
+			$this->MultiCell($w[4], 14, $row[4], 'LRB','L', 1, 0);
+			$this->Ln();
+			$i = !$i;
+		}
+	}
+}
+
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -30,7 +85,7 @@ $pdf->SetSubject('Web-programozás II - 3. Labor - TCPDF');
 $pdf->SetKeywords('TCPDF, PDF, Web-programozás II, Labor3');
 
 // set default header data
-$pdf->SetHeaderData("nje.png", 25, "FELHASZNÁLÓK LISTÁJA", "Web-programozás II\n3. Labor\n".date('Y.m.d',time()));
+$pdf->SetHeaderData("nje.png", 15, "FELHASZNÁLÓK LISTÁJA", "Web-programozás II\n3. Labor\n".date('Y.m.d',time()));
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -47,81 +102,36 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/hun.php')) {
+	require_once(dirname(__FILE__).'/lang/hun.php');
+	$pdf->setLanguageArray($l);
+}
+
 // ---------------------------------------------------------
 
-// set font
-$pdf->SetFont('helvetica', '', 10);
+$pdf->SetFont('helvetica', 'B', 10);
 
 // add a page
 $pdf->AddPage();
 
-// create the HTML content
-$html  = '
-<html>
-	<head>
-		<style>
-			table {border-collapse: collapse;}
-			th {font-weight: border: 1px solid red; text-align: center;}
-			td {border: 1px solid blue;}
-		</style>
-	</head>
-	<body>
-		<h1 style="text-align: center; color: blue;">FELHASZNÁLÓK</h1>
-		<table>
-			<tr style="background-color: red; color: white;">
-			<th style="width: 5%;">&nbsp;<br>&nbsp;<br>&nbsp;</th>
-			<th style="width: 20%;">&nbsp;<br>CSALÁDI NÉV</th>
-			<th style="width: 20%;">&nbsp;<br>UTÓNÉV</th>
-			<th style="width: 20%;">&nbsp;<br>BEJELENTKEZÉS</th>
-			<th style="width: 35%;">&nbsp;<br>JELSZÓ</th>
-			</tr>
-';
-			$i=1;
-foreach($rows as $row) {
-	if($i)
-		$html .= '
-			<tr style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 255);">
-		';
-	else					
-		$html .= '
-			<tr style="background-color: rgb(0, 0, 255); color: rgb(255, 255, 255);">
-		';
-	$j=0;
-	foreach($row as $cell) {
-		if($j==0)
-			$html .= '
-				<td style="text-align: right; width: 5%;">
-			';
-		else if($j < 4)
-			$html .= '
-				<td style="text-align: left; width: 20%;">
-			';
-		else if($j == 4)
-			$html .= '
-				<td style="text-align: left; width: 35%;">
-			';
-		$html .= $cell;
-		$html .= '
-				</td>
-		';
-		$j++;
-	}
-	$html .= '
-			</tr>
-	';
-	$i = !$i;
-}
-$html .= '
-		</table>
-	<body>
-</html>';
+// table caption
+$caption = 'FELHASZNÁLÓK';
 
-$pdf->writeHTML($html, true, false, true, false, '');
+// column titles
+$header = array('', 'CSALÁDI NÉV', 'UTÓNÉV', 'BEJELENTKEZÉS', 'JELSZÓ');
+
+// data loading
+$rows = $pdf->LoadData('web2', 'felhasznalok');
+
+// print colored table
+$pdf->ColoredTable($caption, $header, $rows);
 
 // ---------------------------------------------------------
 
-//Close and output PDF document
+// close and output PDF document
 ob_clean();
-//ob_flush();
-$pdf->Output($_SERVER['DOCUMENT_ROOT'] . 'teszt.pdf', 'I');
-exit;
+$pdf->Output('labor3-2.pdf', 'I');
