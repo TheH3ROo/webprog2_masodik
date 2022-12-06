@@ -1,6 +1,6 @@
 <?php
     define('HOST', 'localhost');
-    define('DATABASE', 'web2');
+    define('DATABASE', 'masodik');
     define('USER', 'root');
     define('PASSWORD', '');
     
