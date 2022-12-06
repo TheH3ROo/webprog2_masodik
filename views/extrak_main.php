@@ -1,5 +1,6 @@
 <h2>
-    <br>A következő címen és telefonon érhet el:<br>
-    <br>Cím: ...<br>
-    <br>Telefon: ...<br>
+    <br>Itt az extra dolgokat találja meg, úgy mint:<br>
+    <br>Javascript<br>
+    <br>Ajax<br>
+    <br>PDF<br>
 </h2>

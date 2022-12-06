@@ -1,3 +1,3 @@
-<?php
-    echo file_get_contents("javascript\obj.html");
-?>
+<script>
+  window.location.href = "http://localhost/webprog2_masodik/javascript/obj.html";
+</script>
